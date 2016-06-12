@@ -1,0 +1,13 @@
+1.	What additional properties did you add to your models and why?
+
+I added a couple new properties to my model, for both cosmetic and functional reasons. The main cosmetic change I made was in the Score Model where I added "target" as a property. This was done, because I thought that being able to see the actual word at the end of a lost game would be nice from a user perspective. Conversely, I added "attempts_allowed" as a property to the "Score" model mainly because I belived it would be useful later on for ranking.
+
+In the Game Model, I included correct as a repeated integer property in order to keep a runnign track of the indexes of the correctly guessed letters as I made moves in the hangman game. Similarly I included history, as a pickle property in order to keep a running track of ALL moves that I made, whether they were correct or incorrect.
+
+In the User Model, I included 3 additional properties, that I wanted to use for eventual user rankings. These were num_wins, num_loss, win_ratio. num_win, and num_loss were running counts of the number of wins/losses that the User had accumulated so far. Win ratio, was a value that would be derived from these two properties, and was the actual ranking value that I would be using.
+
+Finally, to actually pick the target word itself, I wrote a method called "pick_word" in my utils.py file, which would essentially pick, given a set of defined parameters, a random word, out of a stored set of every english language word, that was loaded in from a txt file located in the same directory. This function was run at the creation of a new game so that the target word would remain anonymous, and constantly changing.
+
+2.	What were some of the trade-offs or struggles you faced when implementing the new game logic?
+
+The main struggle that I faced when writing my Hangman game logic was figuring out a way to update my models as I played the game. For instance, I didn't realize early on how to store a list, or set of dicts values in a propery, so writing the main game code to make moves "3 dimensionally" was a little difficult at first. The other struggle that I had to work through was learning how to link the different models together so that I would be able to get the correct information out of them through queries.
