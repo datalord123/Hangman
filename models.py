@@ -18,7 +18,7 @@ class User(ndb.Model):
     def rank_form(self):
         return RankForm(user_name = self.name,
                         email = self.email,
-                        win_ratio = float(self.num_win)/(float(self.num_win)+float(self.num_loss)),
+                        win_ratio = self.win_ratio,
                         num_win = self.num_win,
                         num_loss = self.num_loss)
 

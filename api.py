@@ -1,5 +1,6 @@
 import endpoints
 from protorpc import remote, messages
+from decimal import Decimal
 from google.appengine.api import memcache
 from google.appengine.api import taskqueue
 from models import User, Game, Score
@@ -112,10 +113,11 @@ class PlayHangmanApi(remote.Service):
             [set_score_at(score,secretWord,i) for i in game.correct]
             msg = "Incorrect, you have {} attempts remaining. {}".format(game.attempts_remaining,score)
             game.add_game_history(msg,guess)
-            game.put()
           else:
             msg = "Out of Tries. The answer was {}. Game Over".format(secretWord)
             user.num_loss +=1
+            step = Decimal(user.num_win)/(Decimal(user.num_loss + user.num_win))
+            user.win_ratio = round(step,3)            
             user.put()
             game.add_game_history(msg,guess)       
             game.end_game()
@@ -126,6 +128,8 @@ class PlayHangmanApi(remote.Service):
           msg = "Correct,{}".format(score)
           if len(game.correct) == len(secretWord):
             user.num_win +=1
+            step = Decimal(user.num_win)/(Decimal(user.num_loss + user.num_win))
+            user.win_ratio = round(step,3)            
             user.put()
             game.end_game(True)
             msg = "You've won. The word was \n {}".format(game.target)
